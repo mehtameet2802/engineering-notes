@@ -1,0 +1,21 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import ArticleList from '../../components/ArticleList.astro';
+import TopicChips from '../../components/TopicChips.astro';
+import FilterInput from '../../components/FilterInput.astro';
+import { getPublishedArticles, pluralize } from '../../lib/articles';
+
+const articles = await getPublishedArticles();
+---
+
+<BaseLayout title="Writing" description="All articles and engineering notes." current="writing">
+  <section class="page-wrap pt-12 pb-16 md:pt-16">
+    <p class="text-[11px] font-semibold uppercase tracking-wider text-primary">{pluralize(articles.length, 'article')}</p>
+    <h1 class="mt-1 font-serif text-[clamp(2.25rem,5vw,3rem)] leading-tight text-on-surface">All writing</h1>
+    <div class="mt-6 flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
+      <div class="md:max-w-[60%]"><TopicChips /></div>
+      <FilterInput label="Filter writing" placeholder="Title, tag, or topic" />
+    </div>
+    <div class="mt-8"><ArticleList articles={articles} /></div>
+  </section>
+</BaseLayout>

@@ -1,0 +1,62 @@
+---
+import { siteConfig, getNavItems, withBase } from '../config/site';
+import Icon from './Icon.astro';
+import ThemeToggle from './ThemeToggle.astro';
+
+interface Props {
+  current?: string;
+}
+
+const { current = 'writing' } = Astro.props;
+const { internal, all: desktopLinks } = getNavItems();
+---
+
+<header
+  class="fixed top-0 inset-x-0 z-50 bg-surface/90 backdrop-blur-md border-b border-hairline pt-safe"
+>
+  <div class="page-wrap h-14 flex items-center justify-between gap-4">
+    <a class="group flex items-center gap-2.5 min-w-0 truncate rounded-md" href={withBase('/')}>
+      <span class="font-serif text-[20px] font-semibold tracking-tight text-on-surface group-hover:text-primary">
+        {siteConfig.name}
+      </span>
+      <span class="hidden sm:inline-flex items-center px-1.5 py-0.5 rounded-md bg-surface-container text-on-surface-variant text-[11px] tracking-wide border border-hairline">
+        {siteConfig.subtitle}
+      </span>
+    </a>
+    <nav class="hidden md:flex items-center gap-6" aria-label="Primary">
+      {desktopLinks.map((item, index) => {
+                const active = item.id === current;
+        return (
+          <>
+            {index === internal.length && (
+              <span aria-hidden="true" class="h-3.5 w-px bg-hairline" />
+            )}
+            <a
+              href={item.href}
+              class:list={[
+                'py-1 text-[12px] font-semibold tracking-wide transition-colors',
+                active ? 'text-primary border-b border-primary' : 'text-on-surface-variant hover:text-on-surface',
+              ]}
+              aria-current={active ? 'page' : undefined}
+              target={item.external ? '_blank' : undefined}
+              rel={item.external ? 'noopener noreferrer' : undefined}
+            >
+              {item.label}
+            </a>
+          </>
+        );
+      })}
+    </nav>
+    <div class="flex items-center gap-1">
+      <button
+        type="button"
+        class="inline-flex size-11 md:size-8 items-center justify-center rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-surface-container"
+        data-search-open
+        aria-label="Search writing"
+      >
+        <Icon name="search" class="size-[19px]" />
+      </button>
+      <ThemeToggle />
+    </div>
+  </div>
+</header>

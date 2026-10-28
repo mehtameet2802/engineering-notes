@@ -1,0 +1,26 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import TopicCard from '../../components/TopicCard.astro';
+import TopicChips from '../../components/TopicChips.astro';
+import FilterInput from '../../components/FilterInput.astro';
+import { getPublishedArticles, getTopicCounts } from '../../lib/articles';
+
+const topics = getTopicCounts(await getPublishedArticles());
+---
+
+<BaseLayout title="Topics" description="Writing organized by topic." current="topics">
+  <section class="page-wrap pt-12 pb-16 md:pt-16">
+    <p class="text-[11px] font-semibold uppercase tracking-wider text-primary">Topics</p>
+    <h1 class="mt-1 font-serif text-[clamp(2.25rem,5vw,3rem)] leading-tight text-on-surface">Browse by topic</h1>
+    <p class="mt-4 max-w-[52ch] text-[17px] text-on-surface-variant">
+      Notes and write-ups organized around foundational engineering ideas and design trade-offs.
+    </p>
+    <div class="mt-6 flex flex-col gap-6 border-t border-hairline pt-6 md:flex-row md:items-end md:justify-between">
+      <div class="md:max-w-[60%]"><TopicChips /></div>
+      <FilterInput label="Filter topics" placeholder="Search topics" />
+    </div>
+    <div class="mt-8 grid gap-4 md:grid-cols-[repeat(auto-fit,minmax(min(100%,22rem),1fr))]">
+      {topics.map((topic) => <TopicCard {...topic} />)}
+    </div>
+  </section>
+</BaseLayout>

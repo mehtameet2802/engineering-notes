@@ -1,0 +1,38 @@
+---
+import { formatDate } from '../lib/articles';
+import { getTopic, type TopicId } from '../config/site';
+import { withBase } from '../config/site';
+import Icon from './Icon.astro';
+
+interface Props {
+  topic: TopicId;
+  date: Date;
+  minutes: number;
+  author?: string;
+}
+
+const { topic, date, minutes, author } = Astro.props;
+const topicMeta = getTopic(topic);
+---
+
+<div class="flex flex-wrap items-center gap-x-2.5 gap-y-1 text-[12px] font-medium text-outline">
+  <a
+    class="inline-flex items-center px-2 py-0.5 rounded-md bg-surface-container-high text-on-surface-variant border border-hairline hover:text-primary"
+    href={withBase(`/topics/${topic}`)}
+  >
+    {topicMeta.title}
+  </a>
+  {author && (
+    <>
+      <span aria-hidden="true">•</span>
+      <span class="text-on-surface">{author}</span>
+    </>
+  )}
+  <span aria-hidden="true">•</span>
+  <time datetime={date.toISOString()}>{formatDate(date)}</time>
+  <span aria-hidden="true">•</span>
+  <span class="inline-flex items-center gap-1">
+    <Icon name="clock" class="size-3.5 text-primary" />
+    {minutes} min read
+  </span>
+</div>

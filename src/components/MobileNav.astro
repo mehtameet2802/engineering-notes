@@ -1,0 +1,37 @@
+---
+import { getNavItems } from '../config/site';
+import Icon from './Icon.astro';
+import type { IconName } from './icons';
+
+interface Props {
+  current?: string;
+}
+
+const { current = 'writing' } = Astro.props;
+---
+
+<nav
+  class="fixed bottom-0 inset-x-0 z-50 md:hidden bg-surface/90 backdrop-blur-md border-t border-hairline pb-safe"
+  aria-label="Mobile"
+>
+  <div class="flex justify-around items-center h-16 px-1">
+    {getNavItems().all.map((item) => {
+            const active = item.id === current;
+      return (
+        <a
+          href={item.href}
+          class:list={[
+            'flex flex-col items-center justify-center min-w-[56px] h-12 text-[11px]',
+            active ? 'text-primary font-semibold' : 'text-on-surface-variant',
+          ]}
+          aria-current={active ? 'page' : undefined}
+          target={item.external ? '_blank' : undefined}
+          rel={item.external ? 'noopener noreferrer' : undefined}
+        >
+          <Icon name={item.icon as IconName} class="size-[22px]" />
+          <span class="mt-0.5">{item.label}</span>
+        </a>
+      );
+    })}
+  </div>
+</nav>

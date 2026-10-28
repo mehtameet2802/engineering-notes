@@ -1,0 +1,17 @@
+---
+interface Props {
+  href?: string;
+  active?: boolean;
+  as?: 'a' | 'button' | 'span';
+}
+
+const { href, active = false, as = href ? 'a' : 'span' } = Astro.props;
+const Tag = as;
+const classes = active
+  ? 'inline-flex items-center px-3 py-1.5 rounded-md bg-primary text-on-primary text-[12px] font-semibold tracking-wide min-h-11 md:min-h-0'
+  : 'inline-flex items-center px-3 py-1.5 rounded-md bg-surface-container text-on-surface border border-hairline text-[12px] font-medium min-h-11 md:min-h-0 hover:bg-surface-container-high transition-colors';
+---
+
+<Tag class={classes} href={href} data-active={active ? 'true' : undefined}>
+  <slot />
+</Tag>

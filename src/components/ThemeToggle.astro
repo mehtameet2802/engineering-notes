@@ -1,0 +1,28 @@
+---
+import Icon from './Icon.astro';
+---
+
+<button
+  type="button"
+  class="inline-flex size-11 md:size-8 items-center justify-center rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-surface-container transition-colors"
+  data-theme-toggle
+  aria-label="Toggle color theme"
+>
+  <span class="dark:hidden" aria-hidden="true"><Icon name="moon" class="size-[19px]" /></span>
+  <span class="hidden dark:inline" aria-hidden="true"><Icon name="sun" class="size-[19px]" /></span>
+</button>
+
+<script>
+  function apply(theme: string) {
+    document.documentElement.classList.toggle('dark', theme === 'dark');
+    document.documentElement.dataset.theme = theme;
+    localStorage.setItem('theme', theme);
+  }
+
+  document.querySelectorAll('[data-theme-toggle]').forEach((button) => {
+    button.addEventListener('click', () => {
+      const next = document.documentElement.classList.contains('dark') ? 'light' : 'dark';
+      apply(next);
+    });
+  });
+</script>

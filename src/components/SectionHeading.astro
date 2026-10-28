@@ -1,0 +1,17 @@
+---
+interface Props {
+  title: string;
+  description?: string;
+  id?: string;
+}
+
+const { title, description, id } = Astro.props;
+---
+
+<div class="flex flex-wrap items-end justify-between gap-x-6 gap-y-2">
+  <div>
+    <h2 id={id} class="font-serif text-[clamp(1.5rem,3vw,1.875rem)] leading-tight text-on-surface">{title}</h2>
+    {description && <p class="mt-1 text-[14px] text-on-surface-variant">{description}</p>}
+  </div>
+  <slot />
+</div>

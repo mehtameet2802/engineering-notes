@@ -1,0 +1,30 @@
+---
+---
+
+<div class="fixed inset-x-0 top-14 z-40 h-0.5 bg-transparent pt-safe" aria-hidden="true">
+  <div class="h-full origin-left scale-x-0 bg-primary" data-reading-progress></div>
+</div>
+
+<script>
+  const bar = document.querySelector<HTMLElement>('[data-reading-progress]');
+  const target = document.querySelector<HTMLElement>('[data-article-body]');
+  if (bar && target) {
+    let queued = false;
+    const update = () => {
+      queued = false;
+      const rect = target.getBoundingClientRect();
+      const total = rect.height - window.innerHeight * 0.5;
+      const progress = total > 0 ? Math.min(1, Math.max(0, -rect.top / total)) : 0;
+      bar.style.transform = `scaleX(${progress})`;
+    };
+    const schedule = () => {
+      if (!queued) {
+        queued = true;
+        requestAnimationFrame(update);
+      }
+    };
+    window.addEventListener('scroll', schedule, { passive: true });
+    window.addEventListener('resize', schedule);
+    update();
+  }
+</script>

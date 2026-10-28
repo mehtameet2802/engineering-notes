@@ -1,0 +1,21 @@
+---
+import type { Article } from '../lib/articles';
+import ArticleCard from './ArticleCard.astro';
+
+interface Props {
+  articles: Article[];
+  emptyMessage?: string;
+}
+
+const { articles, emptyMessage = 'Nothing published here yet.' } = Astro.props;
+---
+
+{
+  articles.length === 0 ? (
+    <p class="rounded-lg border border-dashed border-hairline p-8 text-center text-on-surface-variant">{emptyMessage}</p>
+  ) : (
+    <div class="grid gap-4">
+      {articles.map((article) => <ArticleCard article={article} />)}
+    </div>
+  )
+}

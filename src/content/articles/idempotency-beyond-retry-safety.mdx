@@ -1,0 +1,50 @@
+---
+title: Why Idempotency Is More Than Retry Safety
+description: Retries look simple until you don't know whether the original request completed. Notes on idempotency keys, deduplication, and what they do and don't guarantee.
+date: 2026-10-24
+topic: reliability-apis
+tags: [idempotency, apis, retries]
+featured: true
+draft: true
+---
+
+import Callout from '../../components/Callout.astro';
+import Figure from '../../components/Figure.astro';
+import FlowDiagram from '../../components/FlowDiagram.astro';
+
+> Sample article. It is marked `draft: true`, so it appears in dev only. Delete it or set `draft: false` once you have real content.
+
+## The naive retry trap
+
+A client sends a request and the connection drops before a response arrives. Did the server process it? The client cannot know, and a blind retry might charge a card twice.
+
+<Callout title="Key idea">
+An operation is idempotent when applying it more than once has the same effect as applying it once.
+</Callout>
+
+## Idempotency keys in practice
+
+The client attaches a unique key to each logical operation. The server records the key with the result, and a repeat of the same key returns the stored result instead of running the operation again.
+
+<Figure label="Request flow" caption="The key check and the write happen in one transaction.">
+  <FlowDiagram steps={[{ label: 'Client', note: 'sends key' }, { label: 'Server', note: 'looks up key' }, { label: 'Store', note: 'commit + result' }]} />
+</Figure>
+
+```python
+def handle(request, db):
+    with db.transaction():
+        saved = db.get_response(request.idempotency_key)
+        if saved:
+            return saved
+        response = process(request)
+        db.save_response(request.idempotency_key, response)
+        return response
+```
+
+| State | Meaning | Server action |
+| --- | --- | --- |
+| Unseen | First time this key arrives | Process and store |
+| In flight | Another request holds the key | Reject or wait |
+| Completed | Result already stored | Replay stored result |
+
+Use `Idempotency-Key` as a request header, and expire stored keys on a schedule you can explain.

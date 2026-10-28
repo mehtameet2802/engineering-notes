@@ -1,0 +1,34 @@
+---
+import { articlePath, type Article } from '../lib/articles';
+import { withBase } from '../config/site';
+
+interface Props {
+  previous?: Article;
+  next?: Article;
+}
+
+const { previous, next } = Astro.props;
+const link =
+  'block h-full rounded-lg border border-hairline bg-surface-container-lowest p-4 hover:border-outline-variant';
+---
+
+{
+  (previous || next) && (
+    <nav aria-label="Previous and next writing" class="mt-12 grid gap-3 sm:grid-cols-2">
+      {previous ? (
+        <a href={withBase(articlePath(previous))} class={link} rel="prev">
+          <span class="text-[11px] font-semibold uppercase tracking-wider text-outline">← Previous</span>
+          <span class="mt-1 block font-serif text-lg text-on-surface">{previous.data.title}</span>
+        </a>
+      ) : (
+        <span />
+      )}
+      {next && (
+        <a href={withBase(articlePath(next))} class:list={[link, 'sm:text-right']} rel="next">
+          <span class="text-[11px] font-semibold uppercase tracking-wider text-outline">Next →</span>
+          <span class="mt-1 block font-serif text-lg text-on-surface">{next.data.title}</span>
+        </a>
+      )}
+    </nav>
+  )
+}

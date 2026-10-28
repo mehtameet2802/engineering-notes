@@ -1,0 +1,20 @@
+---
+interface Props {
+  title?: string;
+  kind?: 'note' | 'warning';
+}
+
+const { title, kind = 'note' } = Astro.props;
+---
+
+<aside
+  class:list={[
+    'callout my-6 rounded-lg border p-4 text-[15px]',
+    kind === 'warning'
+      ? 'border-tertiary-container/40 bg-tertiary-container/10'
+      : 'border-hairline bg-surface-container-low',
+  ]}
+>
+  {title && <p class="mb-1 text-[11px] font-semibold uppercase tracking-wider text-primary">{title}</p>}
+  <div class="[&>*+*]:mt-2 [&>*]:m-0"><slot /></div>
+</aside>

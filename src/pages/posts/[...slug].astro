@@ -1,0 +1,58 @@
+---
+import { render } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import ArticleMeta from '../../components/ArticleMeta.astro';
+import TableOfContents from '../../components/TableOfContents.astro';
+import ReadingProgress from '../../components/ReadingProgress.astro';
+import ShareActions from '../../components/ShareActions.astro';
+import Prose from '../../components/Prose.astro';
+import RelatedArticles from '../../components/RelatedArticles.astro';
+import PrevNext from '../../components/PrevNext.astro';
+import TagChip from '../../components/TagChip.astro';
+import { absoluteUrl, siteConfig } from '../../config/site';
+import { articlePath, getPublishedArticles, neighbors, readingTime, relatedArticles } from '../../lib/articles';
+
+export async function getStaticPaths() {
+  const articles = await getPublishedArticles();
+  return articles.map((article) => ({
+    params: { slug: article.id.replace(/\.mdx?$/, '') },
+    props: { article, articles },
+  }));
+}
+
+const { article, articles } = Astro.props;
+const { Content, headings } = await render(article);
+const { title, description, date, updated, topic, tags, author } = article.data;
+const { previous, next } = neighbors(article, articles);
+---
+
+<BaseLayout title={title} description={description} type="article" publishedTime={date} modifiedTime={updated}>
+  <ReadingProgress />
+  <div class="page-wrap pt-10 pb-16 md:pt-14">
+    <header class="max-w-[48rem]" data-pagefind-body>
+      <ArticleMeta topic={topic} date={date} minutes={readingTime(article.body ?? '')} author={author ?? siteConfig.author} />
+      <h1 class="mt-5 font-serif text-[clamp(2rem,5vw,3rem)] leading-[1.15] tracking-tight text-on-surface" data-pagefind-meta="title">
+        {title}
+      </h1>
+      <p class="mt-4 text-[18px] leading-relaxed text-on-surface-variant">{description}</p>
+      <div class="mt-5"><ShareActions title={title} url={absoluteUrl(articlePath(article))} /></div>
+    </header>
+
+    <div class="mt-10 grid gap-8 lg:grid-cols-[minmax(0,1fr)_16rem] lg:gap-12">
+      <aside class="lg:col-start-2 lg:row-start-1">
+        <div class="lg:sticky lg:top-24"><TableOfContents headings={headings} /></div>
+      </aside>
+      <div class="min-w-0 lg:col-start-1 lg:row-start-1">
+        <Prose><Content /></Prose>
+        {tags.length > 0 && (
+          <ul class="mt-10 flex flex-wrap gap-2" aria-label="Tags">
+            {tags.map((tag) => <li><TagChip>#{tag}</TagChip></li>)}
+          </ul>
+        )}
+        {updated && <p class="mt-6 text-[13px] text-outline">Updated <time datetime={updated.toISOString()}>{updated.toDateString()}</time></p>}
+        <PrevNext previous={previous} next={next} />
+      </div>
+    </div>
+    <RelatedArticles articles={relatedArticles(article, articles)} />
+  </div>
+</BaseLayout>

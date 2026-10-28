@@ -1,0 +1,26 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import ArticleList from '../../components/ArticleList.astro';
+import TopicChips from '../../components/TopicChips.astro';
+import { siteConfig } from '../../config/site';
+import { articlesByTopic, getPublishedArticles, pluralize } from '../../lib/articles';
+
+export function getStaticPaths() {
+  return siteConfig.topics.map((topic) => ({ params: { topic: topic.id }, props: { topic } }));
+}
+
+const { topic } = Astro.props;
+const articles = articlesByTopic(await getPublishedArticles(), topic.id);
+---
+
+<BaseLayout title={topic.title} description={topic.description} current="topics">
+  <section class="page-wrap pt-12 pb-16 md:pt-16">
+    <p class="text-[11px] font-semibold uppercase tracking-wider text-primary">{pluralize(articles.length, 'article')}</p>
+    <h1 class="mt-1 font-serif text-[clamp(2.25rem,5vw,3rem)] leading-tight text-on-surface">{topic.title}</h1>
+    <p class="mt-4 max-w-[52ch] text-[17px] text-on-surface-variant">{topic.description}</p>
+    <div class="mt-6"><TopicChips active={topic.id} /></div>
+    <div class="mt-8">
+      <ArticleList articles={articles} emptyMessage="Nothing published in this topic yet." />
+    </div>
+  </section>
+</BaseLayout>

@@ -1,0 +1,35 @@
+---
+---
+
+<div class="prose-article" data-article-body data-pagefind-body>
+  <slot />
+</div>
+
+<script>
+  document.querySelectorAll<HTMLPreElement>('.prose-article pre.astro-code').forEach((pre) => {
+    const wrapper = document.createElement('div');
+    wrapper.className = 'code-block';
+    const bar = document.createElement('div');
+    bar.className = 'code-block__bar';
+    const lang = document.createElement('span');
+    lang.textContent = pre.dataset.language && pre.dataset.language !== 'plaintext' ? pre.dataset.language : 'code';
+    const button = document.createElement('button');
+    button.type = 'button';
+    button.className = 'code-block__copy';
+    button.textContent = 'Copy';
+    button.setAttribute('aria-label', 'Copy code to clipboard');
+    button.addEventListener('click', async () => {
+      try {
+        await navigator.clipboard.writeText(pre.innerText);
+        button.textContent = 'Copied';
+      } catch {
+        button.textContent = 'Failed';
+      }
+      setTimeout(() => (button.textContent = 'Copy'), 1800);
+    });
+    bar.append(lang, button);
+    pre.replaceWith(wrapper);
+    wrapper.append(bar, pre);
+    pre.tabIndex = 0;
+  });
+</script>

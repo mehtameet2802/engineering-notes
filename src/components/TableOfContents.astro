@@ -1,0 +1,64 @@
+---
+import type { MarkdownHeading } from 'astro';
+
+interface Props {
+  headings: MarkdownHeading[];
+}
+
+const items = Astro.props.headings.filter((h) => h.depth === 2 || h.depth === 3);
+---
+
+{
+  items.length > 1 && (
+    <details class="group rounded-lg border border-hairline bg-surface-container-low" data-toc>
+      <summary class="flex min-h-11 cursor-pointer list-none items-center justify-between px-4 text-[11px] font-semibold uppercase tracking-wider text-on-surface lg:pointer-events-none">
+        Contents
+        <span aria-hidden="true" class="text-outline transition-transform group-open:rotate-180 lg:hidden">▾</span>
+      </summary>
+      <nav aria-label="Table of contents" class="px-4 pb-4">
+        <ol class="space-y-1 text-[13px]">
+          {items.map((h) => (
+            <li class:list={[h.depth === 3 && 'pl-3']}>
+              <a
+                href={`#${h.slug}`}
+                data-toc-link
+                class="block rounded-md border-l-2 border-transparent py-1.5 pl-2.5 text-on-surface-variant hover:text-on-surface aria-[current=true]:border-primary aria-[current=true]:font-semibold aria-[current=true]:text-primary"
+              >
+                {h.text}
+              </a>
+            </li>
+          ))}
+        </ol>
+      </nav>
+    </details>
+  )
+}
+
+<script>
+  const toc = document.querySelector<HTMLDetailsElement>('[data-toc]');
+  if (toc) {
+    const wide = window.matchMedia('(min-width: 1024px)');
+    const sync = () => {
+      if (wide.matches) toc.open = true;
+    };
+    sync();
+    wide.addEventListener('change', sync);
+
+    const links = [...toc.querySelectorAll<HTMLAnchorElement>('[data-toc-link]')];
+    const byId = new Map(links.map((a) => [decodeURIComponent(a.hash.slice(1)), a]));
+    const observer = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (!entry.isIntersecting) continue;
+          links.forEach((a) => a.removeAttribute('aria-current'));
+          byId.get(entry.target.id)?.setAttribute('aria-current', 'true');
+        }
+      },
+      { rootMargin: '-72px 0px -70% 0px' },
+    );
+    byId.forEach((_, id) => {
+      const el = document.getElementById(id);
+      if (el) observer.observe(el);
+    });
+  }
+</script>

@@ -1,0 +1,21 @@
+---
+import type { Article } from '../lib/articles';
+import ArticleCard from './ArticleCard.astro';
+
+interface Props {
+  articles: Article[];
+}
+
+const { articles } = Astro.props;
+---
+
+{
+  articles.length > 0 && (
+    <section aria-labelledby="related-heading" class="mt-16">
+      <h2 id="related-heading" class="font-serif text-2xl text-on-surface">Related writing</h2>
+      <div class="mt-5 grid gap-4 md:grid-cols-[repeat(auto-fit,minmax(18rem,1fr))]">
+        {articles.map((article) => <ArticleCard article={article} />)}
+      </div>
+    </section>
+  )
+}

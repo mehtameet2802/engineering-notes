@@ -1,0 +1,27 @@
+---
+import { articlePath, readingTime, type Article } from '../lib/articles';
+import { withBase } from '../config/site';
+import ArticleMeta from './ArticleMeta.astro';
+import Icon from './Icon.astro';
+
+interface Props {
+  article: Article;
+}
+
+const { article } = Astro.props;
+const { title, description, date, topic } = article.data;
+---
+
+<article class="relative rounded-xl border border-hairline bg-surface-container-lowest p-6 md:p-10">
+  <ArticleMeta topic={topic} date={date} minutes={readingTime(article.body ?? '')} />
+  <h3 class="mt-5 max-w-[24ch] font-serif text-[clamp(1.75rem,4vw,2.5rem)] leading-tight tracking-tight text-on-surface">
+    {title}
+  </h3>
+  <p class="mt-4 max-w-[62ch] text-base leading-relaxed text-on-surface-variant">{description}</p>
+  <a
+    href={withBase(articlePath(article))}
+    class="mt-6 inline-flex min-h-11 items-center gap-1.5 text-[14px] font-semibold text-primary hover:underline underline-offset-4"
+  >
+    Read article <Icon name="arrow" class="size-4" />
+  </a>
+</article>

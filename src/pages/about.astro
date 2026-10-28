@@ -1,0 +1,56 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Icon from '../components/Icon.astro';
+import { siteConfig, withBase } from '../config/site';
+
+const elsewhere = [siteConfig.social.github, siteConfig.social.linkedin, siteConfig.social.leetcode];
+const icons = { GitHub: 'github', LinkedIn: 'linkedin', LeetCode: 'article' } as const;
+---
+
+<BaseLayout title="About" description={siteConfig.about.paragraphs[0]} current="about">
+  <section class="page-wrap pt-12 pb-16 md:pt-16">
+    <h1 class="font-serif text-[clamp(2.25rem,6vw,3.5rem)] leading-[1.1] tracking-tight text-on-surface">{siteConfig.name}</h1>
+    <p class="mt-2 font-serif text-[clamp(1.25rem,3vw,1.75rem)] italic text-primary">{siteConfig.subtitle}</p>
+    <div class="mt-8 max-w-[62ch] space-y-5 text-[17px] text-on-surface-variant">
+      {siteConfig.about.paragraphs.map((p) => <p>{p}</p>)}
+    </div>
+
+    <section class="mt-14" aria-labelledby="write-heading">
+      <h2 id="write-heading" class="font-serif text-2xl text-on-surface">What I write about</h2>
+      <ul class="mt-5 grid gap-3 md:grid-cols-[repeat(auto-fit,minmax(min(100%,18rem),1fr))]">
+        {
+          siteConfig.topics.map((topic) => (
+            <li class="rounded-lg border border-hairline bg-surface-container-lowest p-4">
+              <a href={withBase(`/topics/${topic.id}`)} class="font-serif text-lg text-on-surface hover:text-primary">{topic.title}</a>
+              <p class="mt-1 text-[14px] text-on-surface-variant">{topic.description}</p>
+            </li>
+          ))
+        }
+      </ul>
+    </section>
+
+    <section class="mt-14" aria-labelledby="elsewhere-heading">
+      <h2 id="elsewhere-heading" class="font-serif text-2xl text-on-surface">Elsewhere</h2>
+      <ul class="mt-5 grid gap-3 md:grid-cols-[repeat(auto-fit,minmax(min(100%,16rem),1fr))]">
+        {
+          elsewhere.map((link) => (
+            <li>
+              <a
+                href={link.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="flex min-h-14 items-center gap-3 rounded-lg border border-hairline bg-surface-container-lowest p-4 hover:border-outline-variant"
+              >
+                <Icon name={icons[link.label as keyof typeof icons]} class="size-5 text-primary" />
+                <span class="min-w-0">
+                  <span class="block text-[14px] font-semibold text-on-surface">{link.label}</span>
+                  <span class="block truncate text-[12px] text-on-surface-variant">{link.handle}</span>
+                </span>
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </section>
+  </section>
+</BaseLayout>
