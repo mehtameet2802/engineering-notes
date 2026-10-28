@@ -2,7 +2,6 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import SectionHeading from '../components/SectionHeading.astro';
 import FeaturedArticle from '../components/FeaturedArticle.astro';
-import TopicChips from '../components/TopicChips.astro';
 import ArticleList from '../components/ArticleList.astro';
 import Icon from '../components/Icon.astro';
 import { siteConfig, withBase } from '../config/site';
@@ -13,7 +12,7 @@ const featured = getFeaturedArticle(articles);
 const latest = articles.filter((a) => a.id !== featured?.id).slice(0, 5);
 ---
 
-<BaseLayout current="writing">
+<BaseLayout current="home">
   <section class="page-wrap pt-12 md:pt-16">
     <h1 class="font-serif text-[clamp(2.25rem,6vw,3.5rem)] leading-[1.1] tracking-tight text-on-surface">
       {siteConfig.name}
@@ -33,32 +32,23 @@ const latest = articles.filter((a) => a.id !== featured?.id).slice(0, 5);
     )
   }
 
-  <section class="page-wrap mt-12" aria-labelledby="topics-heading">
-    <SectionHeading title="Topics" id="topics-heading">
-      <a href={withBase('/topics')} class="inline-flex min-h-11 items-center gap-1 text-[12px] font-semibold text-primary hover:underline underline-offset-4">
-        All topics <Icon name="arrow" class="size-3.5" />
-      </a>
-    </SectionHeading>
-    <div class="mt-4"><TopicChips /></div>
-  </section>
-
-  <section class="page-wrap mt-14 pb-16" aria-labelledby="latest-heading">
-    <SectionHeading
-      title="Latest writing"
-      id="latest-heading"
-      description="Recent notes and explorations on engineering, design, and problem solving."
-    />
-    <div class="mt-6">
-      <ArticleList articles={latest} emptyMessage={articles.length ? 'That’s everything so far.' : 'The first articles are on their way.'} />
-    </div>
-    {
-      articles.length > 0 && (
+  {
+    articles.length > 0 && (
+      <section class="page-wrap mt-14 pb-16" aria-labelledby="latest-heading">
+        <SectionHeading
+          title="Latest writing"
+          id="latest-heading"
+          description="Recent notes and explorations on engineering, design, and problem solving."
+        />
+        <div class="mt-6">
+          <ArticleList articles={latest} emptyMessage="More writing coming soon." />
+        </div>
         <div class="mt-8 text-center">
           <a href={withBase(siteConfig.paths.posts)} class="inline-flex min-h-11 items-center gap-2 rounded-lg border border-hairline bg-surface-container px-5 text-[13px] font-medium text-on-surface hover:bg-surface-container-high">
             View all writing <Icon name="arrow" class="size-4" />
           </a>
         </div>
-      )
-    }
-  </section>
+      </section>
+    )
+  }
 </BaseLayout>
