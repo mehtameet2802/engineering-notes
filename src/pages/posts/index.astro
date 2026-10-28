@@ -16,6 +16,6 @@ const articles = await getPublishedArticles();
       <div class="md:max-w-[60%]"><TopicChips /></div>
       <FilterInput label="Filter writing" placeholder="Title, tag, or topic" />
     </div>
-    <div class="mt-8"><ArticleList articles={articles} /></div>
+    <div class="mt-8"><ArticleList articles={articles} headingLevel={2} /></div>
   </section>
 </BaseLayout>

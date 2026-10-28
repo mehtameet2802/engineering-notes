@@ -5,9 +5,10 @@ import ArticleCard from './ArticleCard.astro';
 interface Props {
   articles: Article[];
   emptyMessage?: string;
+  headingLevel?: 2 | 3;
 }
 
-const { articles, emptyMessage = 'Nothing published here yet.' } = Astro.props;
+const { articles, emptyMessage = 'Nothing published here yet.', headingLevel = 3 } = Astro.props;
 ---
 
 {
@@ -15,7 +16,7 @@ const { articles, emptyMessage = 'Nothing published here yet.' } = Astro.props;
     <p class="rounded-lg border border-dashed border-hairline p-8 text-center text-on-surface-variant">{emptyMessage}</p>
   ) : (
     <div class="grid gap-4">
-      {articles.map((article) => <ArticleCard article={article} />)}
+      {articles.map((article) => <ArticleCard article={article} headingLevel={headingLevel} />)}
     </div>
   )
 }
