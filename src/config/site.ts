@@ -10,6 +10,9 @@ export const topicIds = [
 
 export type TopicId = (typeof topicIds)[number];
 
+/** Topics need this many published topics before the directory is linked, indexed and put in the sitemap. */
+export const MIN_TOPICS_FOR_DIRECTORY = 2;
+
 export const siteConfig = {
   name: 'Meet Mehta',
   subtitle: 'Software Engineer',
@@ -56,6 +59,7 @@ export const siteConfig = {
   },
   navigation: [
     { label: 'Writing', href: '/posts', id: 'writing', icon: 'article' },
+    { label: 'Topics', href: '/topics', id: 'topics', icon: 'tag', topicsOnly: true },
     { label: 'About', href: '/about', id: 'about', icon: 'book' },
   ],
   externalNavigation: [
@@ -124,9 +128,14 @@ export function absoluteUrl(path: string): string {
   return new URL(normalized, siteConfig.url).toString();
 }
 
-/** Internal links first, then external social links, all resolved to final hrefs. */
-export function getNavItems() {
-  const internal = siteConfig.navigation.map((item) => ({ ...item, href: withBase(item.href), external: false }));
+/**
+ * Internal links first, then external social links, all resolved to final hrefs.
+ * Topics is listed only when `topics` is true, i.e. enough topics have published articles.
+ */
+export function getNavItems({ topics = false }: { topics?: boolean } = {}) {
+  const internal = siteConfig.navigation
+    .filter((item) => topics || !('topicsOnly' in item))
+    .map((item) => ({ ...item, href: withBase(item.href), external: false }));
   const external = siteConfig.externalNavigation.map((item) => ({
     ...item,
     href: siteConfig.social[item.social].href,
@@ -136,8 +145,8 @@ export function getNavItems() {
 }
 
 /** The RSS feed is not linked here; it is advertised via <link rel="alternate"> in the page head. */
-export function getFooterLinks() {
-  return getNavItems().all;
+export function getFooterLinks(options: { topics?: boolean } = {}) {
+  return getNavItems(options).all;
 }
 
 export function getTopic(id: TopicId) {

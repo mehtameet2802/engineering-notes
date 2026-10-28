@@ -5,10 +5,12 @@ import ThemeToggle from './ThemeToggle.astro';
 
 interface Props {
   current?: string;
+  showSearch?: boolean;
+  showTopics?: boolean;
 }
 
-const { current = 'writing' } = Astro.props;
-const { internal, all: desktopLinks } = getNavItems();
+const { current = 'writing', showSearch = true, showTopics = false } = Astro.props;
+const { internal, all: desktopLinks } = getNavItems({ topics: showTopics });
 ---
 
 <header
@@ -46,14 +48,18 @@ const { internal, all: desktopLinks } = getNavItems();
       })}
     </nav>
     <div class="flex items-center gap-1 md:gap-3">
-      <button
-        type="button"
-        class="inline-flex size-11 md:size-8 items-center justify-center rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-surface-container"
-        data-search-open
-        aria-label="Search writing"
-      >
-        <Icon name="search" class="size-[19px]" />
-      </button>
+      {
+        showSearch && (
+          <button
+            type="button"
+            class="inline-flex size-11 md:size-8 items-center justify-center rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-surface-container"
+            data-search-open
+            aria-label="Search writing"
+          >
+            <Icon name="search" class="size-[19px]" />
+          </button>
+        )
+      }
       <ThemeToggle />
     </div>
     </div>

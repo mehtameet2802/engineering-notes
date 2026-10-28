@@ -4,7 +4,7 @@ import Icon from '../components/Icon.astro';
 import { Image } from 'astro:assets';
 import profileLight from '../assets/profile-light.jpg';
 import profileDark from '../assets/profile-dark.jpg';
-import { siteConfig, withBase } from '../config/site';
+import { siteConfig } from '../config/site';
 
 const elsewhere = [siteConfig.social.github, siteConfig.social.linkedin, siteConfig.social.leetcode];
 const icons = { GitHub: 'github', LinkedIn: 'linkedin', LeetCode: 'code' } as const;
@@ -66,7 +66,7 @@ const resume = siteConfig.social.resume;
         {
           siteConfig.topics.map((topic) => (
             <li class="rounded-lg border border-hairline bg-surface-container-lowest p-4">
-              <a href={withBase(`/topics/${topic.id}`)} class="font-serif text-lg text-on-surface hover:text-primary">{topic.title}</a>
+              <h3 class="font-serif text-lg text-on-surface">{topic.title}</h3>
               <p class="mt-1 text-[14px] text-on-surface-variant">{topic.description}</p>
             </li>
           ))

@@ -3,12 +3,18 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import TopicCard from '../../components/TopicCard.astro';
 import TopicChips from '../../components/TopicChips.astro';
 import FilterInput from '../../components/FilterInput.astro';
+import { MIN_TOPICS_FOR_DIRECTORY } from '../../config/site';
 import { getPublishedArticles, getTopicCounts } from '../../lib/articles';
 
 const topics = getTopicCounts(await getPublishedArticles());
 ---
 
-<BaseLayout title="Topics" description="Writing organized by topic." current="topics">
+<BaseLayout
+  title="Topics"
+  description="Writing organized by topic."
+  current="topics"
+  noindex={topics.length < MIN_TOPICS_FOR_DIRECTORY}
+>
   <section class="page-wrap pt-12 pb-16 md:pt-16">
     <p class="text-[11px] font-semibold uppercase tracking-wider text-primary">Topics</p>
     <h1 class="mt-1 font-serif text-[clamp(2.25rem,5vw,3rem)] leading-tight text-on-surface">Browse by topic</h1>
@@ -19,8 +25,14 @@ const topics = getTopicCounts(await getPublishedArticles());
       <div class="md:max-w-[60%]"><TopicChips /></div>
       <FilterInput label="Filter topics" placeholder="Search topics" />
     </div>
-    <div class="mt-8 grid gap-4 md:grid-cols-[repeat(auto-fit,minmax(min(100%,22rem),1fr))]">
-      {topics.map((topic) => <TopicCard {...topic} />)}
-    </div>
+    {
+      topics.length > 0 ? (
+        <div class="mt-8 grid gap-4 md:grid-cols-[repeat(auto-fit,minmax(min(100%,22rem),1fr))]">
+          {topics.map((topic) => <TopicCard {...topic} />)}
+        </div>
+      ) : (
+        <p class="mt-8 text-[15px] text-on-surface-variant">Topics will appear here once articles are published.</p>
+      )
+    }
   </section>
 </BaseLayout>

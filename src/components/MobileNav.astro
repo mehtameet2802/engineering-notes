@@ -5,9 +5,10 @@ import type { IconName } from './icons';
 
 interface Props {
   current?: string;
+  showTopics?: boolean;
 }
 
-const { current = 'writing' } = Astro.props;
+const { current = 'writing', showTopics = false } = Astro.props;
 ---
 
 <nav
@@ -15,7 +16,7 @@ const { current = 'writing' } = Astro.props;
   aria-label="Mobile"
 >
   <div class="flex justify-around items-center h-16 px-1">
-    {getNavItems().all.map((item) => {
+    {getNavItems({ topics: showTopics }).all.map((item) => {
             const active = item.id === current;
       return (
         <a
