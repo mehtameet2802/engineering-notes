@@ -1,0 +1,23 @@
+---
+title: Why Idempotency Keys Matter
+description: Notes on idempotency keys and retries.
+date: 2026-10-24
+topic: reliability-apis
+tags: [idempotency, apis]
+featured: true
+draft: false
+---
+
+Idempotency makes retries safe.
+
+## The retry problem
+
+A client retries a request and idempotency keys prevent duplicates.
+
+## Keys in practice
+
+```python
+def handle(key):
+    return key
+```
+

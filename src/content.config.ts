@@ -3,7 +3,8 @@ import { glob } from 'astro/loaders';
 import { topicIds } from './config/site';
 
 const articles = defineCollection({
-  loader: glob({ pattern: '**/*.{md,mdx}', base: './src/content/articles' }),
+  // ARTICLES_DIR lets the test suite build the site against fixture content.
+  loader: glob({ pattern: '**/*.{md,mdx}', base: process.env.ARTICLES_DIR ?? './src/content/articles' }),
   schema: z.object({
     title: z.string(),
     description: z.string(),
