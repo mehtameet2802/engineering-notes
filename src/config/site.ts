@@ -12,8 +12,8 @@ export type TopicId = (typeof topicIds)[number];
 
 export const siteConfig = {
   name: 'Meet Mehta',
-  subtitle: 'Software Engineering',
-  title: 'Meet Mehta — Software Engineering',
+  subtitle: 'Software Engineer',
+  title: 'Meet Mehta — Engineering Notes',
   description:
     'Writing about software systems, design, problem solving, and things I learn while building and understanding software.',
   author: 'Meet Mehta',
@@ -56,7 +56,6 @@ export const siteConfig = {
   },
   navigation: [
     { label: 'Writing', href: '/posts', id: 'writing', icon: 'article' },
-    { label: 'Topics', href: '/topics', id: 'topics', icon: 'tag' },
     { label: 'About', href: '/about', id: 'about', icon: 'book' },
   ],
   externalNavigation: [

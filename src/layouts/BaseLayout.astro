@@ -57,7 +57,7 @@ const canonical = new URL(Astro.url.pathname, Astro.site).toString();
     {type === 'article' && <meta property="article:author" content={siteConfig.author} />}
     <ThemeInit />
   </head>
-  <body>
+  <body class="min-h-dvh flex flex-col">
     <a
       href="#main"
       class="sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-[100] focus:bg-primary focus:text-on-primary focus:px-3 focus:py-2 focus:rounded-md"
@@ -65,7 +65,7 @@ const canonical = new URL(Astro.url.pathname, Astro.site).toString();
       Skip to content
     </a>
     <Header current={current} />
-    <main id="main" class="pt-[calc(3.5rem+env(safe-area-inset-top))]">
+    <main id="main" tabindex="-1" class="flex-1 pt-[calc(3.5rem+env(safe-area-inset-top))] focus:outline-none">
       <slot />
     </main>
     <Footer />
