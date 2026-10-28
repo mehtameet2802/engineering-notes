@@ -44,8 +44,14 @@ export const siteConfig = {
     },
     leetcode: {
       label: 'LeetCode',
-      href: 'https://leetcode.com/mehtameet2802',
-      handle: 'leetcode.com/mehtameet2802',
+      href: 'https://leetcode.com/u/mehtameet2802/',
+      handle: 'leetcode.com/u/mehtameet2802',
+    },
+    resume: {
+      label: 'Resume',
+      href: 'https://flowcv.com/resume/8v0d7ou9dp',
+      handle: 'flowcv.com/resume/8v0d7ou9dp',
+      description: 'Backend and full-stack experience, one page',
     },
   },
   navigation: [
@@ -56,6 +62,7 @@ export const siteConfig = {
   externalNavigation: [
     { label: 'GitHub', id: 'github', icon: 'github', social: 'github' },
     { label: 'LinkedIn', id: 'linkedin', icon: 'linkedin', social: 'linkedin' },
+    { label: 'Resume', id: 'resume', icon: 'article', social: 'resume' },
   ],
   topics: [
     {

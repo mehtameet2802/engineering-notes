@@ -7,6 +7,7 @@ export type IconName =
   | 'book'
   | 'github'
   | 'linkedin'
+  | 'code'
   | 'rss'
   | 'arrow'
   | 'copy'
@@ -30,6 +31,7 @@ export const paths: Record<IconName, string> = {
     '<path d="M9 19c-4.3 1.4-4.3-2.1-6-2.5m12 5v-3.5c0-1 .1-1.4-.5-2 2.8-.3 5.5-1.4 5.5-6a4.6 4.6 0 0 0-1.3-3.2 4.2 4.2 0 0 0-.1-3.2s-1.1-.3-3.5 1.3a12 12 0 0 0-6.2 0C6.5 2.8 5.4 3.1 5.4 3.1a4.2 4.2 0 0 0-.1 3.2A4.6 4.6 0 0 0 4 9.5c0 4.6 2.7 5.7 5.5 6-.6.5-.6 1.2-.5 2V21"/>',
   linkedin:
     '<rect x="3" y="3" width="18" height="18" rx="2"/><path d="M8 11v6M8 8h.01M12 17v-4.5a2 2 0 1 1 4 0V17"/>',
+  code: '<path d="m8 8-5 4 5 4M16 8l5 4-5 4M14 5l-4 14"/>',
   rss: '<path d="M4 11a9 9 0 0 1 9 9M4 4a16 16 0 0 1 16 16"/><circle cx="5" cy="19" r="1"/>',
   arrow: '<path d="M5 12h14M13 6l6 6-6 6"/>',
   copy: '<rect x="9" y="9" width="11" height="11" rx="1.5"/><path d="M5 15V5.5A1.5 1.5 0 0 1 6.5 4H15"/>',
