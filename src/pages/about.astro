@@ -4,14 +4,22 @@ import Icon from '../components/Icon.astro';
 import { Image } from 'astro:assets';
 import profileLight from '../assets/profile-light.jpg';
 import profileDark from '../assets/profile-dark.jpg';
-import { siteConfig } from '../config/site';
+import { siteConfig, canonicalUrl } from '../config/site';
 
 const elsewhere = [siteConfig.social.github, siteConfig.social.linkedin, siteConfig.social.leetcode];
 const icons = { GitHub: 'github', LinkedIn: 'linkedin', LeetCode: 'code' } as const;
 const resume = siteConfig.social.resume;
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Person',
+  name: siteConfig.name,
+  jobTitle: siteConfig.subtitle,
+  url: canonicalUrl('/about'),
+  sameAs: [siteConfig.social.github.href, siteConfig.social.linkedin.href, siteConfig.social.leetcode.href],
+};
 ---
 
-<BaseLayout title="About" description={siteConfig.about.paragraphs[0]} current="about">
+<BaseLayout title="About" description={siteConfig.about.paragraphs[0]} current="about" jsonLd={jsonLd}>
   <section class="page-wrap pt-12 pb-16 md:pt-16">
     <div class="flex flex-col gap-8 md:flex-row-reverse md:items-start md:justify-between md:gap-12">
       <div class="size-32 shrink-0 overflow-hidden rounded-xl border border-hairline md:size-44">
