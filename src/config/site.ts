@@ -129,8 +129,9 @@ export function getNavItems() {
   return { internal, external, all: [...internal, ...external] };
 }
 
+/** The RSS feed is not linked here; it is advertised via <link rel="alternate"> in the page head. */
 export function getFooterLinks() {
-  return [...getNavItems().all, { label: 'RSS', id: 'rss', href: withBase('/rss.xml'), external: false }];
+  return getNavItems().all;
 }
 
 export function getTopic(id: TopicId) {
