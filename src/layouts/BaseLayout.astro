@@ -1,11 +1,12 @@
 ---
 import '../styles/global.css';
-import { siteConfig, absoluteUrl, withBase } from '../config/site';
+import { siteConfig, absoluteUrl, withBase, MIN_TOPICS_FOR_DIRECTORY } from '../config/site';
 import ThemeInit from '../components/ThemeInit.astro';
 import Header from '../components/Header.astro';
 import MobileNav from '../components/MobileNav.astro';
 import Footer from '../components/Footer.astro';
 import Search from '../components/Search.astro';
+import { getActiveTopics, getPublishedArticles } from '../lib/articles';
 
 interface Props {
   title?: string;
@@ -27,6 +28,13 @@ const {
   noindex = false,
 } = Astro.props;
 
+// Search is only useful once there is published content to index.
+const publishedArticles = await getPublishedArticles();
+const showSearch = siteConfig.features.search && publishedArticles.length > 0;
+// Topics join the navigation once the directory has enough published topics to browse.
+const showTopics = getActiveTopics(publishedArticles).length >= MIN_TOPICS_FOR_DIRECTORY;
+// While the Topics link is hidden, topic pages belong to the Writing section.
+const effectiveCurrent = current === 'topics' && !showTopics ? 'writing' : current;
 const pageTitle = title ? `${title} — ${siteConfig.name}` : siteConfig.title;
 const canonical = new URL(Astro.url.pathname, Astro.site).toString();
 ---
@@ -64,12 +72,12 @@ const canonical = new URL(Astro.url.pathname, Astro.site).toString();
     >
       Skip to content
     </a>
-    <Header current={current} />
+    <Header current={effectiveCurrent} showSearch={showSearch} showTopics={showTopics} />
     <main id="main" tabindex="-1" class="flex-1 pt-[calc(3.5rem+env(safe-area-inset-top))] focus:outline-none">
       <slot />
     </main>
-    <Footer />
-    <MobileNav current={current} />
-    {siteConfig.features.search && <Search />}
+    <Footer showTopics={showTopics} />
+    <MobileNav current={effectiveCurrent} showTopics={showTopics} />
+    {showSearch && <Search />}
   </body>
 </html>

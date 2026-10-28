@@ -45,15 +45,22 @@ export function articlesByTopic(articles: Article[], topic: TopicId): Article[] 
 }
 
 export function getTopicCounts(articles: Article[]) {
-  return siteConfig.topics.map((topic, index) => {
-    const topicArticles = articlesByTopic(articles, topic.id);
-    return {
-      ...topic,
-      index: index + 1,
-      count: topicArticles.length,
-      featured: [...topicArticles.filter((a) => a.data.featured), ...topicArticles.filter((a) => !a.data.featured)].slice(0, 2),
-    };
-  });
+  return siteConfig.topics
+    .map((topic) => {
+      const topicArticles = articlesByTopic(articles, topic.id);
+      return {
+        ...topic,
+        count: topicArticles.length,
+        featured: [...topicArticles.filter((a) => a.data.featured), ...topicArticles.filter((a) => !a.data.featured)].slice(0, 2),
+      };
+    })
+    .filter((topic) => topic.count > 0)
+    .map((topic, index) => ({ ...topic, index: index + 1 }));
+}
+
+/** Topics that have at least one published article; empty topics stay hidden until content exists. */
+export function getActiveTopics(articles: Article[]) {
+  return siteConfig.topics.filter((topic) => articlesByTopic(articles, topic.id).length > 0);
 }
 
 export function relatedArticles(article: Article, articles: Article[], limit = 3): Article[] {

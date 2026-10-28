@@ -1,6 +1,11 @@
 ---
 import { siteConfig, getFooterLinks } from '../config/site';
 
+interface Props {
+  showTopics?: boolean;
+}
+
+const { showTopics = false } = Astro.props;
 const year = new Date().getFullYear();
 ---
 
@@ -12,7 +17,7 @@ const year = new Date().getFullYear();
         <p class="text-[13px] text-on-surface-variant">{siteConfig.footerTagline}</p>
       </div>
       <nav class="flex flex-wrap items-center gap-x-6 gap-y-2" aria-label="Footer">
-        {getFooterLinks().map((item) => (
+        {getFooterLinks({ topics: showTopics }).map((item) => (
           <a
             href={item.href}
             class="inline-flex min-h-8 items-center text-[12px] font-semibold tracking-wide text-on-surface-variant hover:text-on-surface"
