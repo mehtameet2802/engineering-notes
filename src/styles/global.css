@@ -1,6 +1,12 @@
 @import 'tailwindcss';
-@import '@fontsource-variable/inter';
-@import '@fontsource-variable/newsreader';
+@import '@fontsource/zilla-slab/400.css';
+@import '@fontsource/zilla-slab/400-italic.css';
+@import '@fontsource/zilla-slab/500.css';
+@import '@fontsource/zilla-slab/600.css';
+@import '@fontsource/ibm-plex-sans/400.css';
+@import '@fontsource/ibm-plex-sans/500.css';
+@import '@fontsource/ibm-plex-sans/600.css';
+@import '@fontsource/ibm-plex-mono/400.css';
 
 @custom-variant dark (&:where(.dark, .dark *));
 
@@ -101,9 +107,10 @@
 }
 
 @theme inline {
-  --font-sans: 'Inter Variable', Inter, ui-sans-serif, system-ui, sans-serif;
-  --font-serif: 'Newsreader Variable', Newsreader, ui-serif, Georgia, serif;
-  --font-mono: ui-monospace, 'SFMono-Regular', 'JetBrains Mono', Menlo, Consolas, monospace;
+  --font-sans: 'IBM Plex Sans', ui-sans-serif, system-ui, sans-serif;
+  /* headline face; token name stays `serif` (Zilla Slab is a slab serif) */
+  --font-serif: 'Zilla Slab', ui-serif, Georgia, serif;
+  --font-mono: 'IBM Plex Mono', ui-monospace, 'SFMono-Regular', Menlo, Consolas, monospace;
 
   --color-background: var(--background);
   --color-on-background: var(--on-background);
