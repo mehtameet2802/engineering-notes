@@ -9,7 +9,9 @@ import { siteConfig, MIN_TOPICS_FOR_DIRECTORY } from './src/config/site.ts';
 // Counts topics with at least one published article, reading frontmatter directly
 // because content collections are not available while the config is evaluated.
 function countPublishedTopics() {
-  const dir = new URL('./src/content/articles/', import.meta.url);
+  const dir = process.env.ARTICLES_DIR
+    ? new URL(`file://${process.env.ARTICLES_DIR.replace(/\/?$/, '/')}`)
+    : new URL('./src/content/articles/', import.meta.url);
   const topics = new Set();
   for (const file of readdirSync(dir)) {
     if (!/\.mdx?$/.test(file)) continue;

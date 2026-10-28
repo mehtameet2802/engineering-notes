@@ -1,0 +1,6 @@
+{
+  "none":  { "port": 4501, "description": "no published articles (one draft)" },
+  "one":   { "port": 4502, "description": "one published article, one topic" },
+  "plain": { "port": 4503, "description": "three articles, none featured, one topic" },
+  "two":   { "port": 4504, "description": "seven published articles across two topics, plus drafts" }
+}
