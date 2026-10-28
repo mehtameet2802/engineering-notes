@@ -20,7 +20,7 @@ const articles = articlesByTopic(await getPublishedArticles(), topic.id);
     <p class="mt-4 max-w-[52ch] text-[17px] text-on-surface-variant">{topic.description}</p>
     <div class="mt-6"><TopicChips active={topic.id} /></div>
     <div class="mt-8">
-      <ArticleList articles={articles} emptyMessage="Nothing published in this topic yet." />
+      <ArticleList articles={articles} headingLevel={2} emptyMessage="Nothing published in this topic yet." />
     </div>
   </section>
 </BaseLayout>

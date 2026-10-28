@@ -5,9 +5,12 @@ import Icon from './Icon.astro';
 
 interface Props {
   article: Article;
+  /** Heading level for the title; use 2 when the card sits directly under the page's H1. */
+  headingLevel?: 2 | 3;
 }
 
-const { article } = Astro.props;
+const { article, headingLevel = 3 } = Astro.props;
+const Heading = `h${headingLevel}` as 'h2' | 'h3';
 const { title, description, date, tags, topic } = article.data;
 const href = withBase(articlePath(article));
 const searchText = [title, description, getTopic(topic).title, ...tags].join(' ').toLowerCase();
@@ -27,9 +30,9 @@ const searchText = [title, description, getTopic(topic).title, ...tags].join(' '
       <span aria-hidden="true"> · </span>{readingTime(article.body ?? '')} min read
     </p>
   </div>
-  <h3 class="mt-3 font-serif text-[22px] leading-snug text-on-surface">
+  <Heading class="mt-3 font-serif text-[22px] leading-snug text-on-surface">
     <a href={href} class="after:absolute after:inset-0 group-hover:text-primary">{title}</a>
-  </h3>
+  </Heading>
   <p class="mt-2 max-w-[68ch] text-[15px] leading-relaxed text-on-surface-variant">{description}</p>
   <div class="mt-4 flex items-end justify-between gap-4">
     <ul class="flex flex-wrap gap-x-3 gap-y-1 text-[12px] text-outline" aria-label="Tags">
