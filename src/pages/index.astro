@@ -4,15 +4,24 @@ import SectionHeading from '../components/SectionHeading.astro';
 import FeaturedArticle from '../components/FeaturedArticle.astro';
 import ArticleList from '../components/ArticleList.astro';
 import Icon from '../components/Icon.astro';
-import { siteConfig, withBase } from '../config/site';
+import { siteConfig, canonicalUrl, withBase } from '../config/site';
 import { getPublishedArticles, getFeaturedArticle } from '../lib/articles';
 
 const articles = await getPublishedArticles();
 const featured = getFeaturedArticle(articles);
 const latest = articles.filter((a) => a.id !== featured?.id).slice(0, 5);
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'WebSite',
+  name: siteConfig.title,
+  url: canonicalUrl('/'),
+  description: siteConfig.description,
+  inLanguage: siteConfig.locale,
+  author: { '@type': 'Person', name: siteConfig.author },
+};
 ---
 
-<BaseLayout current="home">
+<BaseLayout current="home" jsonLd={jsonLd}>
   <section class="page-wrap pt-12 md:pt-16">
     <h1 class="font-serif text-[clamp(2.25rem,6vw,3.5rem)] leading-[1.1] tracking-tight text-on-surface">
       {siteConfig.name}

@@ -122,6 +122,12 @@ export function withBase(path: string): string {
   return `${base}${path.startsWith('/') ? path : `/${path}`}`;
 }
 
+/** Absolute URL with a trailing slash, matching the canonical URLs and sitemap entries. */
+export function canonicalUrl(path: string): string {
+  const url = absoluteUrl(path);
+  return url.endsWith('/') ? url : `${url}/`;
+}
+
 export function absoluteUrl(path: string): string {
   const normalized = withBase(path);
   if (normalized.startsWith('http')) return normalized;
