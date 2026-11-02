@@ -106,6 +106,16 @@ export const siteConfig = {
         'Practical lessons, mental models, design trade-offs, debugging, and things learned while building.',
     },
   ] satisfies Array<{ id: TopicId; title: string; description: string }>,
+  analytics: {
+    umami: {
+      websiteId: '92e29957-db57-492f-a6f0-a59e7d49a45c',
+      // First-party proxy (a Cloudflare Worker) that forwards to Umami, so blockers see only our own domain.
+      hostUrl: 'https://stats.hemaelectric.in',
+      scriptUrl: 'https://stats.hemaelectric.in/script.js',
+      // Only count visits from the live site, never from local previews of the build.
+      domains: ['mehtameet2802.github.io'],
+    },
+  },
   features: {
     newsletter: false,
     ogImages: false,

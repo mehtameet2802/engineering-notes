@@ -10,12 +10,24 @@
   const target = document.querySelector<HTMLElement>('[data-article-body]');
   if (bar && target) {
     let queued = false;
+    // Each milestone is reported once per page view; Umami ignores the call when it is not loaded.
+    const milestones = [25, 50, 75];
+    let finished = false;
+    const track = (name: string, data?: Record<string, string | number>) =>
+      (window as { umami?: { track: (name: string, data?: object) => void } }).umami?.track(name, data);
     const update = () => {
       queued = false;
       const rect = target.getBoundingClientRect();
       const total = rect.height - window.innerHeight * 0.5;
       const progress = total > 0 ? Math.min(1, Math.max(0, -rect.top / total)) : 0;
       bar.style.transform = `scaleX(${progress})`;
+      while (milestones.length && progress * 100 >= milestones[0]) {
+        track('scroll-depth', { depth: milestones.shift()! });
+      }
+      if (!finished && progress >= 1) {
+        finished = true;
+        track('article-finished');
+      }
     };
     const schedule = () => {
       if (!queued) {
