@@ -17,3 +17,13 @@ describe('analytics', () => {
     }
   });
 });
+
+describe('search console', () => {
+  it('every built page carries the Google verification tag', () => {
+    for (const [route, page] of Object.entries(allPages('two'))) {
+      const tags = page.querySelectorAll('meta[name="google-site-verification"]');
+      expect(tags.length, route).toBe(1);
+      expect(tags[0].getAttribute('content'), route).toBe(siteConfig.searchConsoleVerification);
+    }
+  });
+});
