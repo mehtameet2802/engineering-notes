@@ -9,7 +9,12 @@ export default defineConfig({
   testDir: './tests/e2e',
   fullyParallel: true,
   reporter: [['list']],
-  use: { channel: 'chrome', colorScheme: 'light' },
+  use: {
+    channel: 'chrome',
+    colorScheme: 'light',
+    // Keep tests off the network: the analytics host fails instantly instead of delaying the page load event.
+    launchOptions: { args: ['--host-resolver-rules=MAP stats.hemaelectric.in ~NOTFOUND'] },
+  },
   webServer: [
     ...Object.entries(scenarios).map(([name, { port }]) => ({
       command: `node tests/serve.mjs dist-test/${name} ${port}`,
