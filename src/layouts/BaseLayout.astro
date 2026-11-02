@@ -2,6 +2,7 @@
 import '../styles/global.css';
 import { siteConfig, absoluteUrl, withBase, MIN_TOPICS_FOR_DIRECTORY } from '../config/site';
 import ThemeInit from '../components/ThemeInit.astro';
+import Analytics from '../components/Analytics.astro';
 import Header from '../components/Header.astro';
 import MobileNav from '../components/MobileNav.astro';
 import Footer from '../components/Footer.astro';
@@ -73,6 +74,7 @@ const canonical = new URL(canonicalPath, Astro.site).toString();
     {type === 'article' && <meta property="article:author" content={siteConfig.author} />}
     {jsonLd && <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />}
     <ThemeInit />
+    <Analytics />
   </head>
   <body class="min-h-dvh flex flex-col">
     <a
