@@ -1,13 +1,20 @@
 ---
 import { siteConfig } from '../config/site';
 
-const { websiteId, scriptUrl, domains } = siteConfig.analytics.umami;
+const { websiteId, scriptUrl, hostUrl, domains } = siteConfig.analytics.umami;
 // Production builds only, so development and local previews never record visits.
 const enabled = import.meta.env.PROD && Boolean(websiteId);
 ---
 
 {
   enabled && (
-    <script is:inline defer src={scriptUrl} data-website-id={websiteId} data-domains={domains.join(',')} />
+    <script
+      is:inline
+      defer
+      src={scriptUrl}
+      data-website-id={websiteId}
+      data-host-url={hostUrl}
+      data-domains={domains.join(',')}
+    />
   )
 }

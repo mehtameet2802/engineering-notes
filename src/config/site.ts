@@ -109,8 +109,9 @@ export const siteConfig = {
   analytics: {
     umami: {
       websiteId: '92e29957-db57-492f-a6f0-a59e7d49a45c',
-      // Point this at the first-party proxy (e.g. https://stats.hemaelectric.in/script.js) once it is live.
-      scriptUrl: 'https://cloud.umami.is/script.js',
+      // First-party proxy (a Cloudflare Worker) that forwards to Umami, so blockers see only our own domain.
+      hostUrl: 'https://stats.hemaelectric.in',
+      scriptUrl: 'https://stats.hemaelectric.in/script.js',
       // Only count visits from the live site, never from local previews of the build.
       domains: ['mehtameet2802.github.io'],
     },

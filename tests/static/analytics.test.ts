@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest';
 import { allPages } from '../helpers/site';
 import { siteConfig } from '../../src/config/site';
 
-const { websiteId, scriptUrl, domains } = siteConfig.analytics.umami;
+const { websiteId, scriptUrl, hostUrl, domains } = siteConfig.analytics.umami;
 
 describe('analytics', () => {
   it('every built page loads the Umami script exactly once, restricted to the live domain', () => {
@@ -11,6 +11,7 @@ describe('analytics', () => {
       expect(scripts.length, route).toBe(1);
       expect(scripts[0].getAttribute('src'), route).toBe(scriptUrl);
       expect(scripts[0].getAttribute('data-website-id'), route).toBe(websiteId);
+      expect(scripts[0].getAttribute('data-host-url'), route).toBe(hostUrl);
       expect(scripts[0].getAttribute('data-domains'), route).toBe(domains.join(','));
       expect(scripts[0].hasAttribute('defer'), route).toBe(true);
     }
