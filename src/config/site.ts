@@ -116,6 +116,8 @@ export const siteConfig = {
       domains: ['mehtameet2802.github.io'],
     },
   },
+  // Proves site ownership to Google Search Console; keep it for as long as the property should stay verified.
+  searchConsoleVerification: 'OHivGxGcf22jSKxcC_SB9SiiUpyoGRNJscpIi0Ffg-8',
   features: {
     newsletter: false,
     ogImages: false,
