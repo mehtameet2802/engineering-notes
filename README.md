@@ -31,6 +31,17 @@ The sample article in `src/content/articles/` is a draft. Delete it or set `draf
 
 Pages declare structured data (`WebSite`, `Person`, `BlogPosting`) and canonical URLs ending in `/`. Social-preview images and a `robots.txt` are intentionally not set up: the site lives under a subdirectory, where `robots.txt` is ignored. Submit `sitemap-index.xml` in Google Search Console instead.
 
+## Analytics
+
+Visits are counted with [Umami](https://umami.is) (cookie-free, no consent banner), sent through a first-party proxy on `stats.hemaelectric.in` so common ad-blocker lists do not match it.
+
+- **Config:** `siteConfig.analytics.umami` in `src/config/site.ts` holds the website ID, the proxy address and the live domain. `src/components/Analytics.astro` renders the script in the page head.
+- **Production only:** the script is left out of `npm run dev`, and `data-domains` limits counting to `mehtameet2802.github.io`, so local previews of a build are not counted.
+- **Events:** `src/components/ReadingProgress.astro` reports `scroll-depth` (25, 50, 75) and `article-finished`, once per page view.
+- **Proxy:** a Cloudflare Worker, kept as a reference copy in `workers/umami-proxy/` (not deployed by the site build; see its README for redeploying).
+- **Search Console:** the `google-site-verification` tag comes from `siteConfig.searchConsoleVerification`. Leave it in place, or the property becomes unverified.
+- **Dashboard:** log in to Umami Cloud and open the website. Realtime is the quickest way to confirm tracking works after a deploy.
+
 ## Commands
 
 | Command                | Action                                                         |
@@ -47,10 +58,10 @@ Pages declare structured data (`WebSite`, `Person`, `BlogPosting`) and canonical
 
 The suite builds the site against four small fixture content sets in `tests/fixtures/` (no articles, one article, three unfeatured articles, seven articles across two topics) by setting the optional `ARTICLES_DIR` environment variable. It then checks:
 
-- **Static tests (Vitest):** content states, featured and latest rules, archive order, navigation and active states, canonical URLs, structured data, sitemap, titles, favicon links, heading order, labels, and alt text.
+- **Static tests (Vitest):** content states, featured and latest rules, archive order, navigation and active states, canonical URLs, structured data, sitemap, titles, favicon links, heading order, labels, alt text, and the analytics and Search Console tags.
 - **Browser tests (Playwright):** search, the archive filter, 404s, layout at 375, 768 and 1440px, the footer position, keyboard and accessibility behaviour, and theme persistence.
 
-The browser tests use Google Chrome installed on your machine; no browser is downloaded. Test servers use ports 4501–4504 and 4510.
+The browser tests use Google Chrome installed on your machine; no browser is downloaded. They block the analytics host so a slow network request cannot stall a page load. Test servers use ports 4501–4504 and 4510.
 
 ## Continuous integration
 
